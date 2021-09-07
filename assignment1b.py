@@ -41,7 +41,7 @@ SW_up = data[37-1,:]
 SW_dn = data[38-1,:]
 theta = data[39-1,:]
 
-#i) Compute the annual mean values of the upward and downward solar and in- frared
+#2a Compute the annual mean values of the upward and downward solar and in- frared
 #radiative fluxes1. Compute the ground surface albedo from the annual mean 
 #upward and downward solar radiative fluxes.
 LHF_clean=LHF
@@ -54,8 +54,7 @@ SW_up_clean=SW_up
 SW_up_clean = SW_up_clean[SW_up_clean != -9999.0]
 SW_dn_clean=SW_dn
 SW_dn_clean = SW_dn_clean[SW_dn_clean != -9999.0]
-#for i in range(1:np.size(LW_up)):
-#    if LW_up_clean
+
 LW_up_mean=np.mean(LW_up)
 print("Avearge infra upward is ", LW_up_mean)
 LW_dn_mean=np.mean(LW_dn)
@@ -77,5 +76,25 @@ print("Albedo is ", albedo)
 #fluxes at the TOA and the observed value at the ground surface.
 
 ##???? theta calculation
-SWTOA=SW_dn*np.cos(90/360*2*np.pi)
+SWTOA_dn=SW_dn*np.cos(theta/360*2*np.pi)
+SWTOA_dn_mean=np.mean(SWTOA_dn)
+print("SWTOA downwards on avearge is ", SWTOA_dn_mean)
+
+## 2d) The sensible heat flux (SHF) is the energy flux that is used to heat the atmosphere 
+#and the latent heat flux (LHF) is the evaporation flux in units of Wm−2 (note that 
+#∼29 Wm−2 represents an evaporation rate of about 1 mm/day).
+#Compute the annual mean values of the SHF and LHF. Which one is the largest? 
+#Hypothesize how the ratio SHF/LHF will change in desert areas like the Sahara. 
+#Briefly discuss the seasonal variation of the evaporation.
+
+    
+data_clean=data[data != -9999.0]
+#rows with LHF=-9999
+error_LHF_indx= np.where(LHF == -9999.0)
+LHF_clean=LHF
+LHF_clean = LHF_clean[LHF_clean != -9999.0]
+SHF_clean=SHF
+SHF_clean = SHF_clean[LW_up_clean != -9999.0]
+
+
 
