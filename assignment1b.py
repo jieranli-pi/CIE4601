@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 data= np.loadtxt('cabauw_2019.dat', unpack = True)
 
 nr = data[1-1,:]
@@ -44,6 +45,7 @@ theta = data[39-1,:]
 #2a Compute the annual mean values of the upward and downward solar and in- frared
 #radiative fluxes1. Compute the ground surface albedo from the annual mean 
 #upward and downward solar radiative fluxes.
+print('2a')
 LHF_clean=LHF
 LHF_clean = LHF_clean[LHF_clean != -9999.0]
 LW_up_clean=LW_up
@@ -76,9 +78,40 @@ print("Albedo is ", albedo)
 #fluxes at the TOA and the observed value at the ground surface.
 
 ##???? theta calculation
-SWTOA_dn=SW_dn*np.cos(theta/360*2*np.pi)
+#SWTOA_dn=SW_dn*np.cos(theta/360*2*np.pi)
+print('2b')
+So=1361
+SWTOA_dn=So*np.cos(theta/360*2*np.pi)
 SWTOA_dn_mean=np.mean(SWTOA_dn)
-print("SWTOA downwards on avearge is ", SWTOA_dn_mean)
+print("SWTOA downwards on averrge is ", SWTOA_dn_mean, "W/m^2")
+print(SWTOA_dn_mean-SW_dn_mean,"W/m^2 is absorbed/reflected")
+print(1-SW_dn_mean/SWTOA_dn_mean,"% is absorbed/reflected")
+
+## 2c.(10 points) (i.)  Make a scatter plot of the observed shortwave radiative  uxes
+## at the surfaceas a function of the solar zenith angle.  Choose the size of 
+##your dots small enough to enable a distinction between the different measurement 
+##points.The maximum values represent conditions with clear (cloud free) skies. 
+## The maximum valuesare not falling on a smooth line because the fraction of the 
+##solar radiation that is re ected andabsorbed depends on the amounts of aerosols 
+##and water vapor, both of which are highly variablein time and space.  Also some 
+##patches of thin high clouds may be present.  Let us express theclear sky downward 
+##solar radiative  ux at the ground surface asSW#sfc;clr=S0cosexp(=cos)(2)
+##(ii.)  Find a best estimate for the clear sky optical depth
+##by making a  t by eye.  Add this result,as well as the downward solar radiation 
+##received at the top of the atmosphere to your scatter plot.(iii.)  Compute the annual 
+##mean value of the downward surface shortwave radiation SW#sfc;clrunder the assumption 
+##that at any time clear skies prevail.  With this result we are in a positionto estimate 
+##the mean cloud e ect on solar radiation.  To this end compute the di erence betweenthe 
+##annual mean values of SW#sfc;clrand the observed downward surface shortwave radiation.
+##How large is this cloud radiative forcing e ect for Cabauw?
+print('2c')
+tau=0.25
+plt.scatter(theta, SW_dn, s=0.05)
+plt.plot(theta, SWTOA_dn)
+plt.legend(['SWTOA'])
+plt.xlabel('Theta [degree]')
+plt.ylabel('Short Radiation adiation flux [Wm^-2]')
+plt.title('Zenith angle against wavelength')
 
 ## 2d) The sensible heat flux (SHF) is the energy flux that is used to heat the atmosphere 
 #and the latent heat flux (LHF) is the evaporation flux in units of Wm−2 (note that 
@@ -86,15 +119,35 @@ print("SWTOA downwards on avearge is ", SWTOA_dn_mean)
 #Compute the annual mean values of the SHF and LHF. Which one is the largest? 
 #Hypothesize how the ratio SHF/LHF will change in desert areas like the Sahara. 
 #Briefly discuss the seasonal variation of the evaporation.
-
+print('2d')
     
-data_clean=data[data != -9999.0]
+data_clean=data
 #rows with LHF=-9999
 error_LHF_indx= np.where(LHF == -9999.0)
-LHF_clean=LHF
-LHF_clean = LHF_clean[LHF_clean != -9999.0]
-SHF_clean=SHF
-SHF_clean = SHF_clean[LW_up_clean != -9999.0]
+error_SHF_indx= np.where(SHF == -9999.0)
+error_idx=np.hstack((error_LHF_indx,error_SHF_indx))[0]
+data_clean=np.delete(data_clean, error_idx, 1)
+SHF_clean = data_clean[33-1,:]
+LHF_clean = data_clean[34-1,:]
+print(np.mean(SHF_clean),"is the average SHF")
+print(np.mean(LHF_clean),"is the average LHF")
 
+##2e.(10 points) The websitehttps://www.worlddata.info/europe/netherlands/energy-co
+##nsumption.phppresents the total energy consumption of the Netherlands.(i.)   Convert 
+##the  total  energy  consumption  to  Watts  and  normalize  this  number  by  the 
+##totalpopulation of the Netherlands.(ii.)  Now assume that one will use photovoltaic 
+##panels (PVs) with an eciency of 10% to producethe total amount of energy consumed 
+##in the Netherlands.  ComputeAand`if the total surfacearea occupied by PVs isA=`2.
+print('2e')
+Total_Energy_consumption =108.80 *10**9 *10**3
+Total_population=1728*10**4
+energyperperson=Total_Energy_consumption/Total_population
+print('per person energy watts', energyperperson)
 
+efficiency=0.1
+
+A=Total_Energy_consumption/(SW_dn_mean*efficiency)
+print('Area in m^2',A)
+l=A**(1/2)
+print('l in m',l)
 

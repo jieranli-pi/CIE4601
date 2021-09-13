@@ -57,7 +57,7 @@ print("The answer to qustion 1(iii) wavelength peak for star is ", peak_waveleng
 
 #plt.scatter(wavelength[Radiation_flux_planet.argmax(axis=0)],np.max(Radiation_flux_planet*wavelength),s=70,c='k')
 #plt.scatter(wavelength[Radiation_flux_star.argmax(axis=0)],np.max(Radiation_flux_star),s=70,c='k')
-plt.xlabel('wavelength (m)')
+plt.xlabel('wavelength (um)')
 plt.ylabel('Radiation flux I * wavelength (W/m^2)')
 plt.title('Radiation against wavelength')
 plt.show()
