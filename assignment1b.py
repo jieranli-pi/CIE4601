@@ -98,21 +98,26 @@ print(1-SW_dn_mean/SWTOA_dn_mean,"% is absorbed/reflected")
 ##solar radiative  ux at the ground surface asSW#sfc;clr=S0cosexp(=cos)(2)
 ##(ii.)  Find a best estimate for the clear sky optical depth
 ##by making a  t by eye.  Add this result,as well as the downward solar radiation 
-##received at the top of the atmosphere to your scatter plot.(iii.)  Compute the annual 
+##received at the top of the atmosphere to your scatter plot.
+#(iii.)  Compute the annual 
 ##mean value of the downward surface shortwave radiation SW#sfc;clrunder the assumption 
 ##that at any time clear skies prevail.  With this result we are in a positionto estimate 
 ##the mean cloud e ect on solar radiation.  To this end compute the di erence betweenthe 
 ##annual mean values of SW#sfc;clrand the observed downward surface shortwave radiation.
 ##How large is this cloud radiative forcing e ect for Cabauw?
 print('2c')
-tau=0.25
+tau=0.13
 plt.scatter(theta, SW_dn, s=0.05)
-plt.plot(theta, SWTOA_dn)
-plt.legend(['SWTOA'])
+plt.plot(theta, SWTOA_dn, label='SWTOA')
+plt.legend()
+plt.plot(theta, SWTOA_dn*np.exp(tau/np.cos(np.mean(theta))), label='clear sky')
+plt.legend()
 plt.xlabel('Theta [degree]')
 plt.ylabel('Short Radiation adiation flux [Wm^-2]')
 plt.title('Zenith angle against wavelength')
 
+print('SWsfc=',np.mean(SWTOA_dn*np.exp(tau/np.cos(np.mean(theta)))))
+print('difference',np.mean(SWTOA_dn*np.exp(tau/np.cos(np.mean(theta))))-SW_dn_mean)
 ## 2d) The sensible heat flux (SHF) is the energy flux that is used to heat the atmosphere 
 #and the latent heat flux (LHF) is the evaporation flux in units of Wm−2 (note that 
 #∼29 Wm−2 represents an evaporation rate of about 1 mm/day).
